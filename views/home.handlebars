@@ -1,1 +1,26 @@
-<p>dcdscsdcsd</p>
+<div class="container" id="homePage">
+    <h1>Welcome</h1>
+    <h1>Social Media App</h1>
+    {{#if user}}
+        <p>you are logged in</p>
+    {{else}}
+        <h1>
+            <a href="/auth/google" class="btn-social btn-google btn-lg">
+                <i class="fa fa-google-plus"></i>
+                Signup with Google
+            </a>
+        </h1>
+        <h1>
+            <a href="/auth/google" class="btn-social btn-facebook btn-lg">
+                <i class="fa fa-facebook-official btn-face"></i>
+                Signup with facebook
+            </a>
+        </h1>
+        <h1>
+            <a href="" class="btn-social btn-instagram btn-lg">
+                <i class="fa fa-instagram"></i>
+                Signup with Instagram
+            </a>
+        </h1>
+    {{/if}}
+</div>

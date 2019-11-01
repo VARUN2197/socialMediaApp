@@ -1,0 +1,44 @@
+#homePage {
+    text-align: center;
+}
+
+.btn-facebook {
+    background-color: #4aa1f3;
+    border: 0%;
+    color: #fff;
+    width: auto;
+}
+
+.btn-facebook:link,
+.btn-facebook:visited{
+    background-color: #4aa1f3;
+    text-decoration: none;
+}
+
+.btn-google {
+    background-color: #e44b34;
+    border: 0%;
+    color: #fff;
+    width: auto;
+}
+
+.btn-google:link,
+.btn-google:visited{
+    background-color: #e44b34;
+    text-decoration: none;
+    color: #fff;
+}
+
+.btn-instagram {
+    background-color: #3f729b;
+    border: 0%;
+    color: #fff;
+    width: auto;
+}
+
+.btn-instagram:link,
+.btn-instagram:visited{
+    background-color: #3f729b;
+    text-decoration: none;
+    color: #fff;
+}
