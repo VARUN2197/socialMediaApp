@@ -10,6 +10,7 @@ const User = require('./models/user');
 //connect to MongoURI
 const keys = require('./config/keys');
 require('./passport/google_passport');
+require('./passport/facebook_passport');
 
  //initialize application
 const app = express();
@@ -66,6 +67,17 @@ app.get('/auth/google',
  
 app.get( '/auth/google/callback',
     passport.authenticate( 'google', {
+        successRedirect: '/profile',    
+        failureRedirect: '/'
+}));
+
+
+//facebook auth route
+app.get('/auth/facebook',
+  passport.authenticate('facebook',  { scope : ['email'] }));
+ 
+app.get( '/auth/facebook/callback',
+    passport.authenticate('facebook', {
         successRedirect: '/profile',    
         failureRedirect: '/'
 }));

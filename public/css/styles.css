@@ -42,3 +42,14 @@
     text-decoration: none;
     color: #fff;
 }
+
+h1{
+    text-align: center;
+}
+#mainBody {
+    margin-top: 60px;
+}
+
+#welcome {
+    color: aqua;
+}
