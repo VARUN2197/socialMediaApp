@@ -27,7 +27,6 @@ passport.use(new FacebookStrategy({
         if(user) {
             done(null, user);
         } else {
-            console.log(profile);
             const newUser = {
                 facebook: profile.id,
                 fullName: profile.displayName,

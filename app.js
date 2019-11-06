@@ -55,7 +55,7 @@ mongoose.connect(keys.MongoURI, {
     console.log(err);
 });
 
-app.get('/', (req, res) => {
+app.get('/', ensureGuest, (req, res) => {
     res.render('home.handlebars');
 });
 
@@ -82,7 +82,17 @@ app.get( '/auth/facebook/callback',
         failureRedirect: '/'
 }));
 
-app.get('/profile', (req, res) => {
+//instagram auth route
+app.get('/auth/instagram',
+  passport.authenticate('instagram'));
+
+app.get('/auth/instagram/callback', 
+  passport.authenticate('instagram', { failureRedirect: '/login' }),
+  function(req, res) {
+    res.redirect('/');
+  });
+
+app.get('/profile', ensureAuthenticated, (req, res) => {
     User.findById({_id: req.user._id}) 
     .then((user) => {
         res.render('profile', {
@@ -91,10 +101,59 @@ app.get('/profile', (req, res) => {
     });
 });
 
+app.get('/allUsers', (req, res) => {
+    User.find({}).then((users) => {
+        res.render('users', {
+            users:users
+        });
+    });
+});
+
 app.get('/logout', (req, res) => {
     req.logOut();
     res.redirect('/');
 });
+
+//handle phone 
+app.post('/addPhone', (req,res) => {
+    const phone = req.body.phone;
+    User.findById({_id: req.user._id})
+    .then((user) => {
+        user.phone = phone;
+        user.save().then(() => {
+            res.redirect('/profile');
+        });
+    });
+});
+
+//handle location
+app.post('/addLocation', (req,res) => {
+    const location = req.body.location;
+    User.findById({_id: req.user._id})
+    .then((user) => {
+        user.location = location;
+        user.save().then(() => {
+            res.redirect('/profile');
+        });
+    });
+});
+
+//ensure authethication
+function ensureAuthenticated(req, res, next) {
+    if (req.isAuthenticated()) { 
+        next(); 
+    } else {
+        res.redirect('/');
+    }
+}
+//ensure guest   
+function ensureGuest(req, res, next) {
+    if(req.isAuthenticated()) {
+        res.redirect('/profile');
+    } else{
+        next();
+    }
+}
 
 app.listen(port, () => {
     console.log("Server is running");

@@ -1,19 +1,38 @@
 <div class="container">
   <div class="row">
   <div class="col-sm-4">
-    <div class="card" style="width: 18rem;">
+    <div class="card">
       <img src={{user.image}} class="card-img-top" alt="...">
-      <div class="card-body">
+      <div class="card-body" style="text-align:center;">
         <h5 class="card-title">{{user.fullName}}</h5>
-        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
+        <a href="/addPost" class="btn btn-primary"><i class="fa fa-plus"> Add Post</i></a>
       </div>
     </div>
   </div>
-  <div class="col-sm-4">
+  <div class="col-sm-6">
     <h1>Profile</h1>
-    <p><i class="fa fa-envelope"> {{user.email}}</i></p>
-    <p><i class="fa fa-user"> {{user.fullName}}</i></p>
+    <p class="card-text"><i class="fa fa-envelope"> {{user.email}}</i></p>
+    <p class="card-text"><i class="fa fa-user"> {{user.fullName}}</i></p>
+    {{#if user.phone}}
+      <p class="card-text"><i class="fa fa-phone"> {{user.phone}}</i></p>
+    {{else}}
+      <form action="/addPhone" method="POST" class="form-inline">
+        <div class="form-group mx-sm-3 mb-2">
+          <input type="number" class="form-control" name="phone" placeholder="Enter phone number">
+        </div>
+        <button type="submit" class="btn btn-primary mb-2"><i class="fa fa-check"></i></button>
+      </form>
+    {{/if}}
+    {{#if user.location}}
+      <p class="card-text"><i class="fa fa-map-marker"> {{user.location}}</i></p>
+    {{else}}
+      <form action="/addLocation" method="POST" class="form-inline">
+        <div class="form-group mx-sm-3 mb-2">
+          <input type="text" class="form-control" name="location" placeholder="Enter your city/location">
+        </div>
+        <button type="submit" class="btn btn-primary mb-2"><i class="fa fa-check"></i></button>
+      </form>
+    {{/if}}
   </div>
 </div>
 </div>

@@ -1,0 +1,9 @@
+<nav class="navbar fixed-bottom navbar-dark bg-dark">
+   {{#if user}}
+        <a class="navbar-brand" href="/profile"><i class="fa fa-user"> {{user.firstName}}</i></a>
+        <a class="navbar-brand" href="#">SocialMedia Inc.</a>
+   {{else}}
+        <a class="navbar-brand" href="#">SocialMedia Inc.</a>
+        <a class="navbar-brand" href="#">&copy 2019 and all right reserved</a>
+    {{/if}}
+</nav>            

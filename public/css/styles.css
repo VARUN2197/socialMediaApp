@@ -53,3 +53,7 @@ h1{
 #welcome {
     color: aqua;
 }
+
+.col-sm-4 {
+    margin-bottom : 10px;
+}
