@@ -1,0 +1,25 @@
+<div class="container">
+    <h1>Create Post</h1>
+    <form style="margin:40px" action="/savePost" method="POST">
+    <div class="form-group">
+        <label for="title">Title</label>
+        <input name="title" class="form-control" placeholder="Enter Title">
+    </div>
+    <div class="form-group">
+        <label for="body">Body</label>
+        <textarea name="postBody" type="text" class="form-control" placeholder="How do you feel?"></textarea>
+    </div>
+    <div class="form-group">
+        <label for="status" class="col-form-label">Status</label>
+        <select class="form-control" name="status">
+            <option value="public">Public</option>
+            <option value="private">Private</option>
+        </select>
+    </div>
+    <div class="form-group form-check">
+        <input type="checkbox" name="allowComment" class="form-check-input" id="allowComment">
+        <label class="form-check-label" for="allowComment">Allow Comment</label>
+    </div>
+    <button type="submit" class="btn btn-primary">Post</button>
+    </form>
+</div>

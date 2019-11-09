@@ -48,6 +48,7 @@ h1{
 }
 #mainBody {
     margin-top: 60px;
+    margin-bottom:60px;
 }
 
 #welcome {
@@ -56,4 +57,14 @@ h1{
 
 .col-sm-4 {
     margin-bottom : 10px;
+}
+
+.post-user-pic {
+    width: 100px;
+    height: auto;
+}
+
+.comment-user-pic {
+    width: 50px;
+    height: auto;
 }

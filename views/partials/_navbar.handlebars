@@ -3,7 +3,7 @@
   {{#if user}}
       <a class="navbar-brand" href="/allUsers" id="allUsers">
       <i class="fa fa-users">All Users</i></a>
-      <a class="navbar-brand" href="/post" id="posts">
+      <a class="navbar-brand" href="/allPost" id="posts">
       <i class="fa fa-globe">Posts</i></a>
   {{else}}
   {{/if}}
@@ -14,9 +14,10 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
           <li class="nav-item">
+             {{#if user}}
             <a class="nav-link" href='/logout'><i class="fa fa-sign-out"></i>Logout</a>
+            {{/if}}
           </li>
-    
     </ul>
   </div>
 </nav>

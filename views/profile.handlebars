@@ -1,38 +1,60 @@
 <div class="container">
   <div class="row">
   <div class="col-sm-4">
-    <div class="card">
-      <img src={{user.image}} class="card-img-top" alt="...">
-      <div class="card-body" style="text-align:center;">
-        <h5 class="card-title">{{user.fullName}}</h5>
-        <a href="/addPost" class="btn btn-primary"><i class="fa fa-plus"> Add Post</i></a>
+    <div class="card" id="profileCard">
+      <img src={{user.image}} class="card-img-top" alt="..." style="padding:20px">
+      <div class="card-body" >
+          <p class="card-title"><i class="fa fa-user"></i><b> {{user.fullName}}</b></p>
+          <p class="card-text"><i class="fa fa-envelope"> {{user.email}}</i></p>
+          {{#if user.phone}}
+            <p class="card-text"><i class="fa fa-phone"> {{user.phone}}</i></p>
+          {{else}}
+            <form action="/addPhone" method="POST" class="form-inline">
+              <div class="form-group mx-sm-3 mb-2">
+                <input type="number" class="form-control" name="phone" placeholder="Enter phone number">
+              </div>
+              <button type="submit" class="btn btn-primary mb-2"><i class="fa fa-check"></i></button>
+            </form>
+          {{/if}}
+          {{#if user.location}}
+            <p class="card-text"><i class="fa fa-map-marker"> {{user.location}}</i></p>
+          {{else}}
+            <form action="/addLocation" method="POST" class="form-inline">
+              <div class="form-group mx-sm-3 mb-2">
+                <input type="text" class="form-control" name="location" placeholder="Enter your city/location">
+              </div>
+              <button type="submit" class="btn btn-primary mb-2"><i class="fa fa-check"></i></button>
+            </form>
+          {{/if}}
+          <a href="/addPost" class="btn btn-primary"><i class="fa fa-plus"> Add Post</i></a>  
       </div>
     </div>
   </div>
-  <div class="col-sm-6">
-    <h1>Profile</h1>
-    <p class="card-text"><i class="fa fa-envelope"> {{user.email}}</i></p>
-    <p class="card-text"><i class="fa fa-user"> {{user.fullName}}</i></p>
-    {{#if user.phone}}
-      <p class="card-text"><i class="fa fa-phone"> {{user.phone}}</i></p>
-    {{else}}
-      <form action="/addPhone" method="POST" class="form-inline">
-        <div class="form-group mx-sm-3 mb-2">
-          <input type="number" class="form-control" name="phone" placeholder="Enter phone number">
-        </div>
-        <button type="submit" class="btn btn-primary mb-2"><i class="fa fa-check"></i></button>
-      </form>
-    {{/if}}
-    {{#if user.location}}
-      <p class="card-text"><i class="fa fa-map-marker"> {{user.location}}</i></p>
-    {{else}}
-      <form action="/addLocation" method="POST" class="form-inline">
-        <div class="form-group mx-sm-3 mb-2">
-          <input type="text" class="form-control" name="location" placeholder="Enter your city/location">
-        </div>
-        <button type="submit" class="btn btn-primary mb-2"><i class="fa fa-check"></i></button>
-      </form>
-    {{/if}}
+  <div class="col-sm-8">
+    <h1>My Posts</h1>
+    <hr>
+      {{#each posts}}
+      <div class="media">
+          <img src={{user.image}} class="mr-3 post-user-pic" alt="...">
+          <div class="media-body">
+              <h3 class="mt-0">{{title}}</h3>
+              <small style="color: green;"> {{status}}</small>
+              <h6>Author: {{user.fullName}}</h6>
+              <p>
+                  {{body}}
+              </p>
+              <small>{{postDate}}</small>
+              <br>
+              <a href='/editPost/{{id}}'><i class="fa fa-pencil"> Edit</i></a>
+              <form style="margin:40px" action="/deletePost/{{id}}?_method=DELETE" method="POST">
+                <button class="btn btn-danger" style="float: right;"><i class="fa fa-trash-o"></i></button>
+              </form>
+          </div>
+      </div>
+      <hr>
+      {{else}}
+          <p>You haven't posted anything yet</p>
+      {{/each}}
   </div>
-</div>
+  </div>
 </div>

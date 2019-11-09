@@ -6,6 +6,8 @@ const session = require("express-session");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const User = require('./models/user');
+const Post = require('./models/post');
+const methodOverride = require('method-override');
 
 //connect to MongoURI
 const keys = require('./config/keys');
@@ -36,7 +38,7 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-
+app.use(methodOverride('_method'));
 
 //set global vars for user
 app.use((req, res, next) => {
@@ -76,7 +78,7 @@ app.get( '/auth/google/callback',
 app.get('/auth/facebook',
   passport.authenticate('facebook',  { scope : ['email'] }));
  
-app.get( '/auth/facebook/callback',
+app.get('/auth/facebook/callback',
     passport.authenticate('facebook', {
         successRedirect: '/profile',    
         failureRedirect: '/'
@@ -92,16 +94,75 @@ app.get('/auth/instagram/callback',
     res.redirect('/');
   });
 
+
+//handle profile
 app.get('/profile', ensureAuthenticated, (req, res) => {
-    User.findById({_id: req.user._id}) 
-    .then((user) => {
+    Post.find({user : req.user._id}) 
+    .populate('user')
+    .sort({date: 'desc'})
+    .then((posts) => {
         res.render('profile', {
-            user:user
+            posts:posts
         });
     });
 });
 
-app.get('/allUsers', (req, res) => {
+//handle edit post
+app.get('/editPost/:id', ensureAuthenticated, (req, res) => {
+    Post.findOne({_id: req.params.id})
+    .then((post) => {
+        res.render('editingPost', {
+            post: post
+        });
+    });
+});
+
+//save post after edit
+app.put('/editingPost/:id', (req, res) => {
+    Post.findOne({_id: req.params.id})
+    .then((post) => {
+        var allowComment;
+        if(req.body.allowComment){
+            allowComment=true;
+        } else {
+            allowComment=false;
+        }
+        post.title= req.body.title;
+        post.body= req.body.postBody;
+        post.status= req.body.status;
+        post.allowComment= allowComment;
+        post.save().then(() => {
+            res.redirect('/profile');
+        })
+    });
+});
+
+//delete post
+app.delete('/deletePost/:id', (req,res) => {
+    Post.deleteOne({_id: req.params.id})
+    .then(() => {
+        res.redirect('/profile');
+    })
+});
+
+//add Comment to post
+app.post('/addComment/:id', (req,res) => {
+    Post.findOne({_id: req.params.id})
+    .then((post) => {
+        var comment = {
+            commentBody: req.body.commentBody,
+            commentUser: req.user
+        }
+        post.comments.push(comment);
+        post.save()
+        .then(() => {
+            res.redirect('/allPost')
+        })
+    })
+})
+
+//show all user
+app.get('/allUsers', ensureAuthenticated, (req, res) => {
     User.find({}).then((users) => {
         res.render('users', {
             users:users
@@ -109,6 +170,17 @@ app.get('/allUsers', (req, res) => {
     });
 });
 
+//show a particular user
+app.get('/user/:id', (req, res) => {
+    User.findById({_id: req.params.id})
+    .then((user) => {
+        res.render('user', {
+            user: user
+        });
+    })
+});
+
+//handle logout
 app.get('/logout', (req, res) => {
     req.logOut();
     res.redirect('/');
@@ -134,6 +206,46 @@ app.post('/addLocation', (req,res) => {
         user.location = location;
         user.save().then(() => {
             res.redirect('/profile');
+        });
+    });
+});
+
+//add post
+app.get('/addPost', ensureAuthenticated, (req, res) => {
+    res.render('addPost');
+});
+
+
+//save post
+app.post('/savePost', (req, res) => {
+    var allowComment;
+    if (req.body.allowComment) {
+        allowComment= true;
+    } else {
+        allowComment= false;
+    }
+    const newPost = {
+        title: req.body.title,
+        body: req.body.postBody,
+        status: req.body.status,
+        allowComment: allowComment,
+        user: req.user._id
+    }
+    new Post(newPost).save()
+    .then(() => {
+        res.redirect('/allPost');
+    });
+});
+
+//handle display all post
+app.get('/allPost', ensureAuthenticated, (req, res) => {
+    Post.find({status: 'public'})
+    .populate('user')
+    .populate('comments.commentUser')
+    .sort({date: 'desc'})
+    .then((posts) => {
+        res.render('publicPosts', {
+            posts: posts
         });
     });
 });

@@ -1,0 +1,41 @@
+<div class="container">
+    {{#each posts}}
+    <div class="media">
+        <img src={{user.image}} class="mr-3 post-user-pic" alt="...">
+        <div class="media-body">
+            <h3 class="mt-0">{{title}} <i class="fa fa-globe" style="color: green;"></i></h3>
+            <h6>Author: {{user.fullName}}</h6>
+            <p>
+                {{body}}
+            </p>
+            <small>{{postDate}}</small>
+            <br>
+            {{#if allowComment}}
+                {{#each comments}}
+                    <div class="media mt-3">
+                        <a class="mr-3">
+                            <img src={{commentUser.image}} class="mr-3 comment-user-pic">
+                        </a>
+                        <div class="media-body">
+                            <h8 class="mt-0">{{commentUser.fullName}}</h8>
+                            <p>{{commentBody}}</p>
+                        </div>
+                    </div>
+                    <hr>
+                {{/each}}
+                <form action="/addComment/{{_id}}" method="POST" class="form-inline">
+                    <div class="form-group mx-sm-3 mb-2">
+                        <input type="text" class="form-control" name="commentBody" placeholder="Leave Comment...">
+                    </div>
+                    <button type="submit" class="btn btn-primary mb-2"><i class="fa fa-comment"></i></button>
+                </form>
+            {{else}}
+                <p>Comments not allowed</p>
+            {{/if}}
+        </div>
+    </div>
+    <hr>
+    {{else}}
+        <h1>No post is there.</h1>
+    {{/each}}
+</div>
